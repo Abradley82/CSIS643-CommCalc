@@ -1,0 +1,102 @@
+CREATE DATABASE agentportaldb;
+USE agentportaldb;
+
+CREATE TABLE agent_portal(
+    agentID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    firstName varchar(50),
+    lastName varchar(50),
+    activeStatus SET("active", "inactive"),
+    otherInfo varchar(255)
+);
+
+CREATE TABLE agent_sales(
+    salesID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    salesPeriod date,
+    totalSales int,
+    agentID int,
+    FOREIGN KEY(agentID) REFERENCES agent_portal(agentID)
+);
+
+CREATE DATABASE commissioncalculationdb;
+USE commissioncalculationdb;
+
+CREATE TABLE commcalcreports(
+    id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    salesPeriod date,
+    agentID int,
+    firstName varchar(50),
+    lastName varchar(50),
+    totalSales int,
+    commission int
+);
+
+CREATE DATABASE payrolldb;
+USE payrolldb;
+
+CREATE TABLE monthlypayroll(
+    payrollID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    payPeriod int,
+    agentID int,
+    basePay int,
+    commission int
+);
+
+CREATE DATABASE logindb;
+USE logindb;
+
+CREATE TABLE login(
+    userID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    username varchar(50),
+    password varchar(50)
+);
+
+USE agentportaldb;
+
+INSERT INTO agent_portal(firstName, lastName, activeStatus, otherInfo)
+VALUES ("Mark", "Hodge", "active","Sample other info"),
+    ("John","Smith","inactive","none"),
+    ("Jane","Doe","active","no other info"),
+    ("Nick","Zeffer","active","no other info");
+
+
+INSERT INTO agent_sales(salesPeriod, totalSales, agentID)
+VALUES ("2022-10-01", "200000", "1"),
+    ("2022-10-01", "0", "2"),
+    ("2022-10-01", "350000", "3"),
+    ("2022-10-01", "180000", "4"),
+    ("2022-11-01", "370000", "1"),
+    ("2022-11-01", "0", "2"),
+    ("2022-11-01", "310000", "3"),
+    ("2022-11-01", "260000", "4"),
+    ("2022-12-01", "400000", "1"),
+    ("2022-12-01", "0", "2"),
+    ("2022-12-01", "410000", "3"),
+    ("2022-12-01", "330000", "4");
+
+
+USE commissioncalculationdb;
+
+INSERT INTO commcalcreports (salesPeriod, agentID, firstName, lastName, totalSales, commission)
+VALUES ("2022-10-01", "1","Mark","Hodge","200000","6000"),
+("2022-10-01", "3","Jane","Doe","350000","10500"),
+("2022-10-01", "4","Nick","Zeffer","180000","5400"),
+("2022-11-01", "1","Mark","Hodge","370000","11100"),
+("2022-11-01", "3","Jane","Doe","310000","9300"),
+("2022-11-01", "4","Nick","Zeffer","260000","7800");
+
+USE payrolldb;
+
+INSERT INTO monthlypayroll(payperiod, agentID, basePay, commission)
+VALUES ("2022-10-01", "1", "2000", "6000"),
+    ("2022-10-01", "2", "2500", "0"),
+    ("2022-10-01", "3", "2500", "10500"),
+    ("2022-10-01", "4", "3000", "5400"),
+    ("2022-11-01", "1", "2000", "11100"),
+    ("2022-11-01", "2", "2500", "0"),
+    ("2022-11-01", "3", "2500", "9300"),
+    ("2022-11-01", "4", "3000", "7800");
+
+USE logindb;
+
+INSERT INTO login(username, password)
+VALUES ("admin","1234");
